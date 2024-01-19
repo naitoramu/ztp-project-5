@@ -1,4 +1,5 @@
 ﻿using Eshop.Domain.Customers.Events;
+using Eshop.Domain.Orders.Rules;
 using Eshop.Domain.SeedWork;
 
 namespace Eshop.Domain.Customers
@@ -11,6 +12,8 @@ namespace Eshop.Domain.Customers
         
         public static Customer Create(string name)
         {
+            CheckRule(new CustomerNameMustBeValidAlphabeticStringRule(name));
+            
             return new(Guid.NewGuid(), name);
         }
 
