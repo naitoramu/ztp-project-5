@@ -1,10 +1,10 @@
 ﻿namespace Eshop.Infrastructure.Exceptions
 {
-    public class OrderNotExistsException : Exception
+    public class ProductNotExistsException : Exception
     {
         public Guid Id { get; }
 
-        public OrderNotExistsException(Guid id)
+        public ProductNotExistsException(Guid id)
         {
             Id = id;
         }

@@ -4,7 +4,7 @@ using Eshop.Application.Customers.Queries;
 using Eshop.Application.Shared;
 using Eshop.Domain.Customers;
 
-namespace Eshop.Application.Orders.CustomerOrder.Queries
+namespace Eshop.Application.Customers.Queries
 {
     public class GetCustomerQueryHandler : IQueryHandler<GetCustomerQuery, CustomerDto>
     {

@@ -2,11 +2,11 @@
 
 namespace Eshop.API.Controllers
 {
-    public class CustomerOrderRequest
+    public class ProuctListRequest
     {
         public List<ProductDto> Products { get; set; }
 
-        public CustomerOrderRequest(List<ProductDto> products)
+        public ProuctListRequest(List<ProductDto> products)
         {
             Products = products ?? throw new ArgumentNullException(nameof(products));
         }

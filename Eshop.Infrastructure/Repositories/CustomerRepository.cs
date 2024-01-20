@@ -1,5 +1,6 @@
 using Eshop.Domain.Customers;
 using Eshop.Infrastructure.Database;
+using Eshop.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
@@ -23,7 +24,10 @@ namespace Eshop.Infrastructure.Repositories
 
         public async Task<Customer> GetByIdAsync(Guid id)
         {
-            var customer = await _context.Customers.Find(c => c.Id == id).FirstAsync() ?? throw new CustomerNotExistsException(id);
+            var customer = await _context.Customers
+                .Find(c => c.Id == id)
+                .FirstOrDefaultAsync() ?? throw new CustomerNotExistsException(id);
+                
             _entityTracker.TrackEntity(customer);
 
             return customer;

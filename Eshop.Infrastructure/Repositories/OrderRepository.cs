@@ -1,5 +1,6 @@
 ﻿using Eshop.Domain.Orders;
 using Eshop.Infrastructure.Database;
+using Eshop.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
@@ -23,7 +24,7 @@ namespace Eshop.Infrastructure.Repositories
 
         public async Task<Order> GetByIdAsync(Guid id)
         {
-            var order = await _context.Orders.Find(c => c.Id == id).FirstAsync();
+            var order = await _context.Orders.Find(c => c.Id == id).FirstOrDefaultAsync();
 
             if(order == null)
             {

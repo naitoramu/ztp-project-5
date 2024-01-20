@@ -1,4 +1,5 @@
-﻿using Eshop.Domain.Customers;
+﻿using Eshop.Domain.Carts;
+using Eshop.Domain.Customers;
 using Eshop.Domain.Orders;
 using Eshop.Domain.SeedWork;
 using Eshop.Infrastructure.Database;
@@ -15,6 +16,7 @@ namespace Eshop.Infrastructure
         {
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
 
             services.AddScoped<IProductPriceDataApi, ProductPriceDataApi>();
 
@@ -26,20 +28,11 @@ namespace Eshop.Infrastructure
 
             MongoDbSettings mongoDbSettings = configuration.GetSection("MongoDB").Get<MongoDbSettings>() ?? throw new InvalidOperationException();
 
-            services.AddSingleton<IMongoClient>(ServiceProvider =>
-            {
-                return new MongoClient(mongoDbSettings.ConnectionString);
-            });
+            services.AddSingleton<IMongoClient>(ServiceProvider => new MongoClient(mongoDbSettings.ConnectionString));
 
-            services.AddSingleton(provider =>
-            {
-                return new OrdersContext(mongoDbSettings);
-            });
-
-            services.AddSingleton(provider =>
-            {
-                return new CustomersContext(mongoDbSettings);
-            });
+            services.AddSingleton(provider => new OrdersContext(mongoDbSettings));
+            services.AddSingleton(provider => new CustomersContext(mongoDbSettings));
+            services.AddSingleton(provider => new CartsContext(mongoDbSettings));
         }
     }
 }

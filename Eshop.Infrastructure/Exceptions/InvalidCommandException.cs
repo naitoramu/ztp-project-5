@@ -1,9 +1,12 @@
-﻿public class InvalidCommandException : Exception
+﻿namespace Eshop.Infrastructure.Exceptions
 {
-    public string Details { get; }
-
-    public InvalidCommandException(string message, string details) : base(message)
+    public class InvalidCommandException : Exception
     {
-        this.Details = details;
+        public string Details { get; }
+
+        public InvalidCommandException(string message, string details) : base(message)
+        {
+            this.Details = details;
+        }
     }
 }

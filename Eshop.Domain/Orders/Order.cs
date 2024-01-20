@@ -1,4 +1,5 @@
-﻿using Eshop.Domain.Orders.Events;
+﻿using Eshop.Domain.Carts;
+using Eshop.Domain.Orders.Events;
 using Eshop.Domain.Orders.Rules;
 using Eshop.Domain.Products;
 using Eshop.Domain.SeedWork;
@@ -22,26 +23,23 @@ namespace Eshop.Domain.Orders
             AddDomainEvent(new OrderAddedEvent(Id, customerId));
         }
 
-        public static Order Create(
-            Guid customerId,
-            List<OrderProductData> orderProductsData,
-            List<ProductPriceData> allProductPriceDatas)
+        public static Order Create(Cart cart)
         {
             List<OrderProduct> orderProducts = new();
 
-            foreach (var orderProductData in orderProductsData)
+            foreach (var cartProduct in cart.Products)
             {
-                var productPriceData = allProductPriceDatas.First(x => x.ProductId == orderProductData.ProductId);
-
-                var orderProduct = OrderProduct.Create(orderProductData.ProductId, orderProductData.Quantity, productPriceData.UnitPrice);
-
-                orderProducts.Add(orderProduct);
+                orderProducts.Add(OrderProduct.Create(
+                    cartProduct.ProductId, 
+                    cartProduct.Quantity, 
+                    cartProduct.UnitPrice
+                ));
             }
 
             CheckRule(new OrderMustHaveAtLeastOneProductRule(orderProducts));
             CheckRule(new OrderProductsCostMustNotExceedLimitRule(orderProducts));
 
-            return new Order(customerId, orderProducts);
+            return new Order(cart.CustomerId, orderProducts);
         }
     }
 }

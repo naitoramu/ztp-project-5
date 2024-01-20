@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Eshop.Application.Configuration.Commands;
+using Eshop.Domain.Carts;
 using Eshop.Domain.Orders;
 using Eshop.Domain.SeedWork;
 
@@ -26,12 +27,11 @@ namespace Eshop.Application.Orders.CustomerOrder.Commands
 
         public async Task<Guid> Handle(AddOrderCommand request, CancellationToken cancellationToken)
         {         
-            var productsData = await _productPriceDataApi.Get();
-
-            var order = Order.Create(
+            var order = Order.Create(Cart.Create(
                 request.CustomerId, 
-                request.Products.Select(_mapper.Map<OrderProductData>).ToList(), 
-                productsData);
+                request.Products.Select(_mapper.Map<CartProduct>).ToList(), 
+                await _productPriceDataApi.Get() 
+            ));
 
             _orderRepository.Add(order);
 

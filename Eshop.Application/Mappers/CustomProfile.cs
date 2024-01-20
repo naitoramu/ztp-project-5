@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Eshop.Application.Shared;
+using Eshop.Domain.Carts;
 using Eshop.Domain.Customers;
 using Eshop.Domain.Orders;
 
@@ -32,6 +33,17 @@ namespace Eshop.Application.Mappers
             CreateMap<Customer, CustomerDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+            
+            CreateMap<CartProduct, ProductDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ProductId))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity));
+
+            CreateMap<ProductDto, CartProduct>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity));
+
+            CreateMap<Cart, CartDto>()
+                .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
         }
     }
 }
